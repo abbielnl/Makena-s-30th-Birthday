@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy 30th, Makena</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&family=Manrope:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --wine: #6e1f2b;
+    --wine-deep: #4a1420;
+    --sky: #7fc2e0;
+    --sky-deep: #234a61;
+    --purple: #234a61;
+    --black: #0d0b10;
+    --cream: #f6ece7;
+    --line: rgba(246,236,231,0.18);
+  }
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--black);
+    color: var(--cream);
+    font-family: 'Manrope', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+  h1, h2, .display{
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  p{ line-height: 1.75; font-size: 1.05rem; color: rgba(246,236,231,0.88); }
+  .section{
+    position: relative;
+    padding: 7rem 1.5rem;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .rule{
+    width: 44px;
+    height: 2px;
+    margin-bottom: 1.6rem;
+    border-radius: 2px;
+  }
+
+  /* ---------- Canvas layers ---------- */
+  #confetti-canvas{
+    position: fixed; inset: 0; pointer-events: none; z-index: 40;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    min-height: 100svh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 2rem;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(35,74,97,0.4), transparent 55%),
+      radial-gradient(circle at 80% 75%, rgba(110,31,43,0.4), transparent 55%),
+      radial-gradient(circle at 50% 100%, rgba(127,194,224,0.15), transparent 60%),
+      var(--black);
+  }
+  .hero-eyebrow{
+    font-size: 0.95rem; letter-spacing: 0.02em; color: var(--sky);
+    margin-bottom: 1.2rem;
+  }
+  .hero h1{
+    font-size: clamp(3rem, 12vw, 6.5rem);
+    line-height: 0.95;
+    background: linear-gradient(120deg, var(--cream) 30%, var(--sky) 60%, var(--cream) 90%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero .thirty{
+    font-size: clamp(6rem, 24vw, 13rem);
+    font-style: italic;
+    color: var(--wine);
+    -webkit-text-stroke: 1.5px var(--sky);
+    line-height: 0.85;
+    margin: 0.4rem 0 1.4rem;
+  }
+  .hero p.tag{ max-width: 420px; font-size: 1.1rem; }
+  .enter-btn{
+    margin-top: 2.6rem;
+    background: var(--purple);
+    color: var(--cream);
+    border: 1px solid var(--sky);
+    padding: 0.95rem 2.2rem;
+    border-radius: 999px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.25s ease, background 0.25s ease;
+  }
+  .enter-btn:hover{ background: var(--wine); transform: translateY(-2px); }
+  .enter-btn:focus-visible{ outline: 2px solid var(--sky); outline-offset: 3px; }
+
+  /* ---------- Notes ---------- */
+  .note-eyebrow{ color: var(--sky); font-size: 0.95rem; margin-bottom: 0.9rem; }
+  .note-body p{ white-space: pre-line; }
+  .note--wine .rule{ background: var(--wine); }
+  .note--purple .rule{ background: var(--purple); }
+  .note--sky .rule{ background: var(--sky); }
+  .note--dark{
+    background: linear-gradient(180deg, rgba(74,20,32,0.25), transparent);
+  }
+  .note--toast{
+    text-align: center;
+  }
+  .note--toast .rule{ margin-left: auto; margin-right: auto; background: var(--sky); }
+  .letter{
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 3rem 2.2rem;
+    background: linear-gradient(160deg, rgba(35,74,97,0.16), rgba(110,31,43,0.14));
+    position: relative;
+  }
+  .letter::before{
+    content: "";
+    position: absolute; top: 14px; left: 14px; right: 14px; bottom: 14px;
+    border: 1px solid rgba(127,194,224,0.25);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+  .letter h2{ font-size: 1.5rem; color: var(--sky); margin-bottom: 1.4rem; }
+  .signoff{ margin-top: 1.8rem; font-style: italic; color: var(--cream); }
+
+  /* ---------- Section headings ---------- */
+  .section-head{
+    max-width: 720px; margin: 0 auto; padding: 0 1.5rem;
+    text-align: center;
+  }
+  .section-head h2{ font-size: clamp(1.8rem, 5vw, 2.6rem); margin-bottom: 0.6rem; }
+  .section-head p{ max-width: 480px; margin: 0 auto; color: rgba(246,236,231,0.65); }
+
+  /* ---------- Gallery ---------- */
+  .gallery-wrap{ max-width: 960px; margin: 3rem auto 0; padding: 0 1.5rem 6rem; }
+  .gallery{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .frame{
+    aspect-ratio: 4/5;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    position: relative;
+    background: linear-gradient(155deg, rgba(110,31,43,0.25), rgba(35,74,97,0.3));
+  }
+  .frame img{
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: saturate(1.02);
+    transition: transform 0.5s ease;
+  }
+  .frame:hover img{ transform: scale(1.04); }
+  .frame--quote{
+    display: flex; align-items: center; justify-content: center;
+    padding: 1rem;
+    text-align: center;
+    background: linear-gradient(155deg, rgba(110,31,43,0.4), rgba(35,74,97,0.4));
+  }
+  .frame--quote p{
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--sky);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+  .frame--caption{ position: relative; }
+  .frame--caption .cap{
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 1.6rem 0.9rem 0.9rem;
+    background: linear-gradient(0deg, rgba(13,11,16,0.85), transparent);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--cream);
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+  @media (max-width: 640px){
+    .gallery{ grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ---------- Cake ---------- */
+  .cake-section{
+    text-align: center;
+    padding-bottom: 8rem;
+  }
+  .cake-wrap{ display: flex; flex-direction: column; align-items: center; gap: 2rem; }
+  svg.cake{ width: min(280px, 70vw); height: auto; }
+  .flame{ cursor: pointer; transform-origin: center bottom; }
+  .flame.lit{ animation: flicker 1.4s ease-in-out infinite; }
+  @keyframes flicker{
+    0%, 100% { transform: scaleY(1) scaleX(1); }
+    50% { transform: scaleY(1.12) scaleX(0.94); }
+  }
+  .cake-hint{ font-size: 0.9rem; color: rgba(246,236,231,0.55); }
+  .affirmation-box{
+    min-height: 90px;
+    max-width: 420px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 1.2rem 1.6rem;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: rgba(35,74,97,0.22);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--cream);
+    transition: opacity 0.3s ease;
+  }
+
+  /* ---------- Music toggle ---------- */
+  .music-toggle{
+    position: fixed;
+    bottom: 22px; right: 22px;
+    z-index: 50;
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    border: 1px solid var(--sky);
+    background: var(--black);
+    color: var(--cream);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+  }
+  .music-toggle:focus-visible{ outline: 2px solid var(--sky); outline-offset: 3px; }
+  .bars{ display:flex; gap:2px; align-items:flex-end; height:16px; }
+  .bars span{ width:3px; background: var(--sky); border-radius:1px; animation: bar 1s ease-in-out infinite; }
+  .bars span:nth-child(2){ animation-delay: 0.15s; }
+  .bars span:nth-child(3){ animation-delay: 0.3s; }
+  .music-toggle.paused .bars span{ animation-play-state: paused; height: 5px !important; }
+  @keyframes bar{ 0%,100%{ height: 5px; } 50%{ height: 16px; } }
+
+  footer{
+    text-align: center;
+    padding: 4rem 1.5rem 5rem;
+    color: rgba(246,236,231,0.5);
+    font-size: 0.9rem;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<audio id="bgm" loop>
+  <source src="audio/toast.mp3" type="audio/mpeg">
+</audio>
+
+<button class="music-toggle paused" id="musicToggle" aria-label="Play background music">
+  <div class="bars"><span></span><span></span><span></span></div>
+</button>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">a few notes for Ginnette</div>
+  <h1>Makena</h1>
+  <div class="thirty">30</div>
+  <p class="tag">Some things I've been wanting to tell you. Turn your sound on, and scroll gently.</p>
+  <button class="enter-btn" id="enterBtn">Begin</button>
+</section>
+
+<!-- NOTE 1 -->
+<section class="section note--wine">
+  <div class="rule"></div>
+  <div class="note-eyebrow">her energy</div>
+  <div class="note-body">
+    <p>You carry your own kind of sunshine.
+
+There are people who walk into a room and simply exist, and then there are people like you who walk into a room and somehow change its temperature.
+
+You have this beautiful way of making people smile, of bringing warmth where there was none, and of reminding people that there is still something good to laugh about.
+
+Never underestimate the light you carry. The world is genuinely brighter because you are in it.</p>
+  </div>
+</section>
+
+<!-- NOTE 2 -->
+<section class="section note--sky">
+  <div class="rule"></div>
+  <div class="note-eyebrow">to a daughter of the earth</div>
+  <div class="note-body">
+    <p>May you always remember that you are a part of something much bigger than yourself.
+
+May the earth beneath your feet remind you to stay grounded.
+May the sun on your skin remind you that you deserve warmth.
+May the ocean remind you that it is okay to have depths.
+May the trees remind you that growth does not have to be rushed.
+
+You are nature too. You are allowed to shed old versions of yourself, grow through difficult seasons, bloom unexpectedly, and begin again.
+
+Just like the earth, you were never meant to remain the same.</p>
+  </div>
+</section>
+
+<!-- NOTE 3 (gentle, no diagnosis language) -->
+<section class="section note--purple note--dark">
+  <div class="rule"></div>
+  <div class="note-eyebrow">the seasons no one saw</div>
+  <div class="note-body">
+    <p>There were days when simply getting through the day was an achievement.
+
+There were moments when the light felt far away, and seasons that asked more of you than anyone should ever have to give.
+
+But somehow, you kept going. You found your way back to yourself. And look at you now.
+
+Still laughing. Still loving. Still dreaming. Still becoming.
+
+Not because life was always gentle with you, but because somewhere inside you, there was a strength that refused to disappear.
+
+I hope you know how incredibly proud I am of the woman who made it here.</p>
+  </div>
+</section>
+
+<!-- NOTE 4 -->
+<section class="section note--wine">
+  <div class="rule"></div>
+  <div class="note-eyebrow">her new chapter</div>
+  <div class="note-body">
+    <p>Thirty is not an ending. It is a beginning.
+
+May this decade meet you softly. May you find the kind of peace you don't have to fight for.
+
+May you experience love that feels safe, friendships that feel like home, mornings that make you grateful to be alive, and dreams that scare you because they're bigger than anything you've imagined before.
+
+May you stop shrinking yourself for places that were never big enough for you. May you take up space. May you laugh loudly. May you love deeply. May you travel far. May you heal completely.
+
+And may the next ten years be proof that there was so much more waiting for you on the other side of everything you've survived.</p>
+  </div>
+</section>
+
+<!-- NOTE 5: TOAST -->
+<section class="section note--toast">
+  <div class="rule"></div>
+  <div class="note-eyebrow">a toast</div>
+  <div class="note-body">
+    <p>So here's to you.
+
+Here's to the little girl you once were. Here's to the woman you've become. Here's to every version of you that had to exist for you to arrive here.
+
+Here's to the tears, the laughter, the lessons, the mistakes, the healing, the adventures, the people you've loved and the lives you've touched.
+
+Here's to everything you've survived. Here's to everything you've yet to experience.
+
+And most importantly — here's to 30.
+
+May this be the decade where you don't just survive. May you absolutely, unapologetically live.</p>
+  </div>
+</section>
+
+<!-- PHOTO GALLERY -->
+<div class="section-head">
+  <h2>A few of our favourites</h2>
+  <p>Every version of you, worth keeping.</p>
+</div>
+<div class="gallery-wrap">
+  <div class="gallery" id="gallery">
+    <div class="frame frame--caption">
+      <img src="photos/photo-01.jpg" alt="Makena">
+      <div class="cap">She survived the storm and still became sunshine.</div>
+    </div>
+    <div class="frame"><img src="photos/photo-02.jpg" alt="Makena" loading="lazy"></div>
+    <div class="frame"><img src="photos/photo-03.jpg" alt="Makena" loading="lazy"></div>
+    <div class="frame frame--quote"><p>You are exactly where you need to be.</p></div>
+    <div class="frame"><img src="photos/photo-04.jpg" alt="Makena" loading="lazy"></div>
+    <div class="frame"><img src="photos/photo-05.jpg" alt="Makena" loading="lazy"></div>
+    <div class="frame"><img src="photos/photo-06.jpg" alt="Makena" loading="lazy"></div>
+    <div class="frame frame--quote"><p>May you bloom at your own pace.</p></div>
+    <div class="frame"><img src="photos/photo-07.jpg" alt="Makena" loading="lazy"></div>
+    <div class="frame"><img src="photos/photo-08.jpg" alt="Makena" loading="lazy"></div>
+    <div class="frame"><img src="photos/photo-09.jpg" alt="Makena" loading="lazy"></div>
+    <div class="frame frame--quote"><p>The earth knows how to begin again. So do you.</p></div>
+    <div class="frame"><img src="photos/photo-10.jpg" alt="Makena" loading="lazy"></div>
+    <div class="frame"><img src="photos/photo-11.jpg" alt="Makena" loading="lazy"></div>
+    <div class="frame"><img src="photos/photo-12.jpg" alt="Makena" loading="lazy"></div>
+    <div class="frame frame--quote"><p>Thirty years of becoming.</p></div>
+  </div>
+</div>
+
+<!-- CAKE -->
+<div class="section-head">
+  <h2>Make a wish</h2>
+  <p>Light the candle. Every time you do, it'll leave you something to carry into 30.</p>
+</div>
+<section class="cake-section">
+  <div class="cake-wrap">
+    <svg class="cake" viewBox="0 0 240 220" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="120" cy="205" rx="95" ry="12" fill="#4a1420" opacity="0.5"/>
+      <rect x="35" y="130" width="170" height="65" rx="8" fill="#6e1f2b"/>
+      <rect x="35" y="130" width="170" height="16" rx="8" fill="#8a2c3a"/>
+      <rect x="55" y="95" width="130" height="45" rx="8" fill="#234a61"/>
+      <rect x="55" y="95" width="130" height="14" rx="8" fill="#3a6c88"/>
+      <rect x="75" y="65" width="90" height="38" rx="8" fill="#7fc2e0"/>
+      <rect x="75" y="65" width="90" height="12" rx="8" fill="#a4d7ec"/>
+      <circle cx="90" cy="130" r="4" fill="#f6ece7"/>
+      <circle cx="150" cy="130" r="4" fill="#f6ece7"/>
+      <circle cx="120" cy="95" r="4" fill="#f6ece7"/>
+      <circle cx="70" cy="95" r="4" fill="#f6ece7"/>
+      <circle cx="170" cy="95" r="4" fill="#f6ece7"/>
+      <rect x="88" y="42" width="7" height="26" rx="3" fill="#f6ece7"/>
+      <path class="flame" data-flame="1" d="M91.5 17 C97 24 100 29 94.5 36 C91.5 39 87.5 36 87.5 32.5 C84 36 83 29 87.5 23 C89.5 20 91.5 18.5 91.5 17 Z" fill="#e8a33d"/>
+      <rect x="116" y="33" width="8" height="35" rx="3" fill="#f6ece7"/>
+      <path class="flame" data-flame="2" d="M120 6 C126 14 129 20 123 28 C120 31 116 28 116 24 C112 28 111 20 116 13 C118 10 120 8 120 6 Z" fill="#e8a33d"/>
+      <rect x="146" y="42" width="7" height="26" rx="3" fill="#f6ece7"/>
+      <path class="flame" data-flame="3" d="M149.5 17 C155 24 158 29 152.5 36 C149.5 39 145.5 36 145.5 32.5 C142 36 141 29 145.5 23 C147.5 20 149.5 18.5 149.5 17 Z" fill="#e8a33d"/>
+    </svg>
+    <div class="cake-hint" id="cakeHint">tap a candle to light it</div>
+    <div class="affirmation-box" id="affirmationBox">🕯️</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="letter">
+    <h2>From your sister, with all my love</h2>
+    <p>Makena, we've grown up together, changed together, annoyed each other, laughed until we couldn't breathe, and had our moments where we probably wondered how we ended up as sisters.</p>
+    <p>But through everything, one thing has never changed. I love you. I am so grateful that out of all the people in this world, I get to call you my sister.</p>
+    <p>I hope you know that I see you. I see the woman you've fought to become. I see the strength behind your smile. I see the light you bring into people's lives. And I see how far you've come.</p>
+    <p>I hope 30 reminds you that your life is precious, your presence matters, and there is still so much beauty waiting for you.</p>
+    <p>Keep being the sunshine you are. Keep choosing yourself. Keep growing. Keep becoming. And whenever life gets heavy again, I hope you remember that you have already survived days you once thought you couldn't.</p>
+    <p class="signoff">Happy 30th, my sister.<br>
+    May the universe be gentle with you. May Mother Earth keep you grounded. May the sun always find you. And may your light never forget how to shine.<br><br>
+    I love you, always. ☀️🌍🤍</p>
+  </div>
+</section>
+
+<footer>
+  Made with love, for Ginnette Makena's 30th. 🤍
+</footer>
+
+<script>
+/* ---------------- Confetti ---------------- */
+const canvas = document.getElementById('confetti-canvas');
+const ctx = canvas.getContext('2d');
+function resize(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resize();
+window.addEventListener('resize', resize);
+
+const palette = ['#6e1f2b', '#7fc2e0', '#234a61', '#f6ece7'];
+let particles = [];
+
+function burstConfetti(x, y, count = 90){
+  for(let i=0; i<count; i++){
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 2 + Math.random() * 6;
+    particles.push({
+      x, y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed - 3,
+      size: 4 + Math.random() * 5,
+      color: palette[Math.floor(Math.random() * palette.length)],
+      rotation: Math.random() * Math.PI,
+      rotSpeed: (Math.random() - 0.5) * 0.3,
+      life: 0,
+      shape: Math.random() > 0.5 ? 'rect' : 'circle'
+    });
+  }
+}
+
+function tickConfetti(){
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => {
+    p.vy += 0.12;
+    p.x += p.vx;
+    p.y += p.vy;
+    p.rotation += p.rotSpeed;
+    p.life++;
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rotation);
+    ctx.fillStyle = p.color;
+    ctx.globalAlpha = Math.max(0, 1 - p.life / 160);
+    if(p.shape === 'rect'){
+      ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size * 0.6);
+    } else {
+      ctx.beginPath();
+      ctx.arc(0, 0, p.size/2, 0, Math.PI*2);
+      ctx.fill();
+    }
+    ctx.restore();
+  });
+  particles = particles.filter(p => p.life < 160 && p.y < canvas.height + 40);
+  requestAnimationFrame(tickConfetti);
+}
+tickConfetti();
+
+/* Gentle confetti moment on entering */
+document.getElementById('enterBtn').addEventListener('click', () => {
+  burstConfetti(window.innerWidth/2, window.innerHeight*0.35, 140);
+  document.querySelector('.section.note--wine').scrollIntoView({behavior: 'smooth'});
+  const bgm = document.getElementById('bgm');
+  bgm.play().then(() => {
+    document.getElementById('musicToggle').classList.remove('paused');
+    document.getElementById('musicToggle').setAttribute('aria-label', 'Pause background music');
+  }).catch(() => { /* autoplay blocked until user gesture on toggle */ });
+});
+
+/* ---------------- Music toggle ---------------- */
+const bgm = document.getElementById('bgm');
+const musicToggle = document.getElementById('musicToggle');
+musicToggle.addEventListener('click', () => {
+  if(bgm.paused){
+    bgm.play().catch(()=>{});
+    musicToggle.classList.remove('paused');
+    musicToggle.setAttribute('aria-label', 'Pause background music');
+  } else {
+    bgm.pause();
+    musicToggle.classList.add('paused');
+    musicToggle.setAttribute('aria-label', 'Play background music');
+  }
+});
+
+/* ---------------- Candle + affirmations ---------------- */
+const affirmations = [
+  "You are allowed to take up space.",
+  "Your softness has never been weakness.",
+  "You have survived every one of your hardest days so far.",
+  "You are the sunshine you once searched for.",
+  "This decade is yours to shape, not just live through.",
+  "You are loved beyond what words can carry.",
+  "Growth doesn't erase how strong you already are.",
+  "You deserve gentle mornings and easy love.",
+  "Your presence changes rooms for the better.",
+  "You get to begin again, as many times as you need to."
+];
+let usedAffirmations = [];
+const flames = document.querySelectorAll('.flame');
+const affirmationBox = document.getElementById('affirmationBox');
+const cakeHint = document.getElementById('cakeHint');
+let anyLit = false;
+
+flames.forEach(flame => {
+  flame.addEventListener('click', () => {
+    const rect = flame.getBoundingClientRect();
+    burstConfetti(rect.left + rect.width/2, rect.top + rect.height/2, 60);
+
+    flame.classList.add('lit');
+
+    if(!anyLit){
+      anyLit = true;
+      cakeHint.textContent = 'tap another candle for another wish';
+    }
+
+    if(usedAffirmations.length === affirmations.length) usedAffirmations = [];
+    let pick;
+    do { pick = affirmations[Math.floor(Math.random() * affirmations.length)]; }
+    while(usedAffirmations.includes(pick) && usedAffirmations.length < affirmations.length);
+    usedAffirmations.push(pick);
+
+    affirmationBox.style.opacity = 0;
+    setTimeout(() => {
+      affirmationBox.textContent = pick;
+      affirmationBox.style.opacity = 1;
+    }, 200);
+  });
+});
+</script>
+</body>
+</html>
